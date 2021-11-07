@@ -33,29 +33,50 @@ from sklearn import datasets, linear_model
 df = sklearn.datasets.load_diabetes(return_X_y=True, as_frame=True)
 data = df[0]
 target = df[1]
-age_bmi_col = data["age"] / data["bmi"]
-data["age_bmi"] = age_bmi_col
+
 print(data)
 print(target)
 
+#Add new coloumn
+data['age_bmi'] = data['age'] / data['bmi']
+print(data)
+print(target)
+
+#Linear regression
 reg = sklearn.linear_model.LinearRegression()
 reg.fit(data, target)
 reg_pred = reg.predict(data)
 
-tf_model = tf.keras.Sequential([
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dense(1, activation=None)
+
+#Neural network
+model = tf.keras.Sequential([
+  tf.keras.layers.Dense(128, activation='relu'),
+  tf.keras.layers.Dense(64, activation='relu'),
+  tf.keras.layers.Dense(1, activation=None)
 ])
 
-tf_model.compile(optimizer='adam',
-                 loss='mse',
-                 metrics=['mae'])
+model.compile(optimizer='Adam', loss='mse', metrics=['mae'])
+model.fit(data, target, batch_size=32, epochs=25)
+nn_pred = model.predict(data)
 
-tf_model.fit(data, target, epochs=25, batch_size=32)
-
-nn_pred = tf_model.predict(data)
-
+#Comparison
 print('MAE with linear model: {}\nMAE with neural network: {}'.format(
     sklearn.metrics.mean_absolute_error(target, reg_pred),
     sklearn.metrics.mean_absolute_error(target, nn_pred)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
