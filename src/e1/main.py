@@ -247,7 +247,7 @@ print("Mean Absolute Error:\n", mae_test_5)
 
 print("-----------------------------------------5d)-----------------------------------------")
 
-print(lasso_reg.coef_)
+print("Coefficients:\n", lasso_reg.coef_)
 # There are 5 values close to zero or equal to zero
 # This information shows that some parameters have no or very little influence on targeting
 
@@ -258,6 +258,6 @@ test_set_house_e5_rem = test_set_house_e5.drop(['AveRooms', 'AveBedrms', 'AveOcc
 
 lasso_reg.fit(training_set_house_e5_rem, training_set_house_e5['Labels'])
 lasso_reg_pred_rem = lasso_reg.predict(test_set_house_e5_rem)
-print('MAE with lasso regression and dropped features:  ',
+print('MAE with lasso regression and removed features:  ',
       sklearn.metrics.mean_absolute_error(test_set_house_e5['Labels'], lasso_reg_pred_rem))
-# Feature removal did not increase the performance of the model.
+# Feature removal did not increase or decrease the performance of the model.
