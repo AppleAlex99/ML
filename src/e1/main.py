@@ -200,21 +200,19 @@ lin_reg_pred_train = lin_reg.predict(x_house)
 print("Linear regression predict train:\n", lin_reg_pred_train)
 
 mse_train = sklearn.metrics.mean_squared_error(training_set_house['HOL'], lin_reg_pred_train, sample_weight=None,
-                                              multioutput='uniform_average', squared=True)
+                                               multioutput='uniform_average', squared=True)
 print("Mean Squared Error Train:")
 print(mse_train)
 
 rmse_train = sklearn.metrics.mean_squared_error(training_set_house['HOL'], lin_reg_pred_train, sample_weight=None,
-                                               multioutput='uniform_average', squared=False)
+                                                multioutput='uniform_average', squared=False)
 print("Root Mean Squared Error Train:")
 print(rmse_train)
 
 mae_train = sklearn.metrics.mean_absolute_error(training_set_house['HOL'], lin_reg_pred_train, sample_weight=None,
-                                               multioutput='uniform_average')
+                                                multioutput='uniform_average')
 print("Mean Absolute Error Train:")
 print(mae_train)
-
-
 
 # The mae value is round about 0.0037. That describes the absolute value
 # of the difference between the forecasted value and the actual value.
@@ -253,11 +251,12 @@ print("Coefficients:\n", lasso_reg.coef_)
 
 print("-----------------------------------------5e)-----------------------------------------")
 
-training_set_house_e5_rem = training_set_house_e5.drop(['AveRooms', 'AveBedrms', 'AveOccup', 'Latitude', 'Longitude'], axis=1)
+training_set_house_e5_rem = training_set_house_e5.drop(['AveRooms', 'AveBedrms', 'AveOccup', 'Latitude', 'Longitude'],
+                                                       axis=1)
 test_set_house_e5_rem = test_set_house_e5.drop(['AveRooms', 'AveBedrms', 'AveOccup', 'Latitude', 'Longitude'], axis=1)
 
 lasso_reg.fit(training_set_house_e5_rem, training_set_house_e5['Labels'])
 lasso_reg_pred_rem = lasso_reg.predict(test_set_house_e5_rem)
 print('MAE with lasso regression and removed features:  ',
       sklearn.metrics.mean_absolute_error(test_set_house_e5['Labels'], lasso_reg_pred_rem))
-# Feature removal did not increase or decrease the performance of the model.
+# Feature removal did increase  the performance of the model just a little bit.
