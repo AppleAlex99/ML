@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import sklearn
-import tensorflow as tf
 from sklearn import *
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import *
