@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import sklearn
+import numpy as np
 from sklearn import *
 from sklearn.datasets.tests.data import openml
 from sklearn.model_selection import GridSearchCV
@@ -8,6 +9,7 @@ from sklearn.svm import *
 from sklearn.preprocessing import *
 from sklearn.pipeline import Pipeline
 from sklearn.kernel_approximation import PolynomialCountSketch
+from sklearn.tree import DecisionTreeRegressor
 
 print("############################Task 1############################")
 print("Part a")
@@ -15,13 +17,14 @@ data_01 = sklearn.datasets.fetch_openml("banknote-authentication", return_X_y=Fa
 print(data_01.frame)
 
 print("Part b")
-tsne = sklearn.manifold.TSNE(n_components=2, learning_rate='auto', init='pca', random_state=11).fit_transform(data_01.data)
-print(tsne)
-tsne_result = pd.DataFrame(tsne, columns=['tsne1', 'tsne2'])
+# TODO: tsne = sklearn.manifold.TSNE(n_components=2, learning_rate='auto', init='pca', random_state=11).fit_transform(
+#    data_01.data)
+# print(tsne)
+# tsne_result = pd.DataFrame(tsne, columns=['tsne1', 'tsne2'])
 
-data_01.target = data_01.target.astype(int)
-plt.scatter(tsne_result['tsne1'], tsne_result['tsne2'], c=data_01.target)
-plt.show()
+# data_01.target = data_01.target.astype(int)
+# plt.scatter(tsne_result['tsne1'], tsne_result['tsne2'], c=data_01.target)
+# TODO: plt.show()
 # Suitable for linear SVM classification:
 # yes, the dataset is is suitable for SVM classification (1372, 2)
 
@@ -31,7 +34,8 @@ x1_train, x1_test, y1_train, y1_test = sklearn.model_selection.train_test_split(
 # print(x1_train, x1_test, y1_train, y1_test)
 
 print("Part d")
-pipeline_01_01 = Pipeline([('scaler', RobustScaler()), ('linearsvc', LinearSVC(C=1, max_iter=10000, loss='hinge', random_state=11))])
+pipeline_01_01 = Pipeline(
+    [('scaler', RobustScaler()), ('linearsvc', LinearSVC(C=1, max_iter=10000, loss='hinge', random_state=11))])
 pipeline_01_01.fit(x1_train, y1_train)
 # I use the RobustScaler, because it is not getting influenced
 # by a few number of very large marginal outliers
@@ -130,9 +134,28 @@ decision_tree = decision_tree.fit(x4_train, y4_train)
 # print(decision_tree_pred)
 
 sklearn.tree.plot_tree(decision_tree)
-plt.show()
+# TODO: plt.show()
 
 print("Part c")
 
+params_dc = {'criterion': ['gini', 'entropy'], 'splitter': ['best', 'random'], 'max_depth': np.arange(2, 15)}
+grid_search_dc = GridSearchCV(decision_tree, params_dc)
+grid_search_dc.fit(data_04.data, data_04.target)
 
+print(grid_search_dc.best_params_)
+print(grid_search_dc.best_score_)
 
+print("Part d")
+# Apply some gaussian noise to targets
+np.random.seed(11)
+noise = np.random.normal(0, 0.2, data_04.target.shape)
+print(noise)
+
+print("Part e")
+params_dc_e = {'splitter': ['best', 'random'], 'max_depth': np.arange(2, 15)}
+decision_tree_reg = DecisionTreeRegressor()
+grid_search_dc_e = GridSearchCV(decision_tree_reg, params_dc_e)
+grid_search_dc_e.fit(data_04.data, noise)
+
+print(grid_search_dc_e.best_params_)
+print(grid_search_dc_e.best_score_)
