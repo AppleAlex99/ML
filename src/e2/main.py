@@ -17,14 +17,13 @@ data_01 = sklearn.datasets.fetch_openml("banknote-authentication", return_X_y=Fa
 print(data_01.frame)
 
 print("Part b")
-# TODO: tsne = sklearn.manifold.TSNE(n_components=2, learning_rate='auto', init='pca', random_state=11).fit_transform(
-#    data_01.data)
-# print(tsne)
-# tsne_result = pd.DataFrame(tsne, columns=['tsne1', 'tsne2'])
+tsne = sklearn.manifold.TSNE(n_components=2, learning_rate='auto', init='pca', random_state=11).fit_transform(data_01.data)
+print(tsne)
+tsne_result = pd.DataFrame(tsne, columns=['tsne1', 'tsne2'])
 
-# data_01.target = data_01.target.astype(int)
-# plt.scatter(tsne_result['tsne1'], tsne_result['tsne2'], c=data_01.target)
-# TODO: plt.show()
+data_01.target = data_01.target.astype(int)
+plt.scatter(tsne_result['tsne1'], tsne_result['tsne2'], c=data_01.target)
+TODO: plt.show()
 # Suitable for linear SVM classification:
 # yes, the dataset is is suitable for SVM classification (1372, 2)
 
@@ -134,7 +133,7 @@ decision_tree = decision_tree.fit(x4_train, y4_train)
 # print(decision_tree_pred)
 
 sklearn.tree.plot_tree(decision_tree)
-# TODO: plt.show()
+TODO: plt.show()
 
 print("Part c")
 

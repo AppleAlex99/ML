@@ -12,6 +12,7 @@
     <option name="namespacePackageFolders">
       <list>
         <option value="$MODULE_DIR$/src/e2" />
+        <option value="$MODULE_DIR$/src/e3" />
       </list>
     </option>
   </component>
