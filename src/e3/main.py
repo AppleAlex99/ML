@@ -57,7 +57,7 @@ print("Part b")
 pipeline = Pipeline([('scaler', StandardScaler()), (
 'randomForestRegressor', RandomForestRegressor(n_estimators=50, max_leaf_nodes=10, random_state=RANDOM_STATE))])
 
-# A random forst is a meta estimator that fits a number of classifying decision trees on various sub-samples
+# A random forest is a meta estimator that fits a number of classifying decision trees on various sub-samples
 # of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.
 
 print("Part c")
@@ -66,7 +66,7 @@ x2_train, x2_test, y2_train, y2_test = sklearn.model_selection.train_test_split(
 
 pipeline = pipeline.fit(x2_train, y2_train)
 pipeline_pred = pipeline.predict(x2_test)
-print(pipeline_pred)
+# print(pipeline_pred)
 
 mae = mean_absolute_error(y2_test, pipeline_pred, sample_weight=None, multioutput='uniform_average')
 print("Mean Absolute Error: ", mae)
@@ -114,8 +114,10 @@ print("AdaBoost accuracy in percent: ", accuracy_ada * 100)
 # subsequent classifiers focus more on difficult cases.
 
 
+print("###################Task 4###################")
 
-
+print("Part a")
+data_04 = make_regression(n_samples=10, n_features=100, n_informative=10, n_targets=1, bias=0.0, effective_rank=None, tail_strength=0.5, noise=0.0, shuffle=True, coef=False, random_state=RANDOM_STATE)
 
 
 
