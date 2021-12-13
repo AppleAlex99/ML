@@ -34,8 +34,7 @@ print("ARI score: ", ari)
 
 print("Part c")
 kmeans_bagging = BaggingClassifier(base_estimator=KMeans(n_clusters=2, random_state=RANDOM_STATE), n_estimators=20,
-                                   max_samples=0.3, max_features=1.0, bootstrap=True,
-                                   bootstrap_features=True, random_state=RANDOM_STATE)
+                                   max_samples=0.3, max_features=1.0, bootstrap=True, random_state=RANDOM_STATE)
 kmeans_bagging = kmeans_bagging.fit(x1_train, y1_train)
 kmeans_bagging_pred = kmeans_bagging.predict(x1_test)
 # print(kmeans_bagging_pred)
@@ -73,7 +72,9 @@ print("Mean Absolute Error: ", mae)
 
 print("Part d")
 
-#TODO:
+print("Important features:", pipeline[1].feature_importances_)
+
+#TODO: Are they compliant with the generated data?
 
 print("###################Task 3###################")
 
@@ -85,7 +86,7 @@ data_03_scale = minmax_scale(data_03.data)
 data_03.data = data_03_scale
 
 x3_train, x3_test, y3_train, y3_test = sklearn.model_selection.train_test_split(data_03.data, data_03.target, train_size=0.80, random_state=RANDOM_STATE)
-#print(x3_train, x3_test, y3_train, y3_test)
+# print(x3_train, x3_test, y3_train, y3_test)
 
 print("Part b")
 log_reg = LogisticRegression(random_state=RANDOM_STATE)
@@ -117,9 +118,15 @@ print("AdaBoost accuracy in percent: ", accuracy_ada * 100)
 print("###################Task 4###################")
 
 print("Part a")
-data_04 = make_regression(n_samples=10, n_features=100, n_informative=10, n_targets=1, bias=0.0, effective_rank=None, tail_strength=0.5, noise=0.0, shuffle=True, coef=False, random_state=RANDOM_STATE)
+data_04, target_04 = make_regression(n_samples=10, n_features=2, n_targets=1, random_state=RANDOM_STATE)
+data_04 = data_04 - data_04.mean()
+# print(data_04)
 
-
+print("Part b")
+fig = plt.figure(figsize=(20,10))
+ax = fig.add_subplot(projection='3d')
+ax.scatter(data_04[:, 0], data_04[:, 1], target_04)
+plt.show()
 
 
 
