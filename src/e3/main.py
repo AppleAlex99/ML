@@ -5,8 +5,9 @@ import sklearn
 from sklearn import *
 from sklearn.cluster import KMeans
 from sklearn.datasets import make_regression
+from sklearn.decomposition import PCA
 from sklearn.ensemble import BaggingClassifier, RandomForestRegressor, AdaBoostClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.metrics import accuracy_score, mean_absolute_error
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, minmax_scale
@@ -117,15 +118,44 @@ print("AdaBoost accuracy in percent: ", accuracy_ada * 100)
 
 print("###################Task 4###################")
 
-print("Part a")
-data_04, target_04 = make_regression(n_samples=10, n_features=2, n_targets=1, random_state=RANDOM_STATE)
-data_04 = data_04 - data_04.mean()
-# print(data_04)
+# load data
+regression_data, regression_targets = make_regression(n_samples=10, n_features=2, n_informative=2,
+                                                      noise=0.0,
+                                                      random_state=RANDOM_STATE)
 
-print("Part b")
-fig = plt.figure(figsize=(20,10))
-ax = fig.add_subplot(projection='3d')
-ax.scatter(data_04[:, 0], data_04[:, 1], target_04)
+# center data
+regression_data = regression_data - regression_data.mean(axis=0)
+
+# visualize data
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(regression_data[:, 0], regression_data[:, 1], regression_targets, cmap='Wistia')
+plt.show()
+
+# perform linear regression
+lin_reg = LinearRegression()
+lin_reg.fit(regression_data, regression_targets)
+
+# visualize regression line (all points are projected onto this line)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(regression_data[:, 0], regression_data[:, 1], regression_targets, cmap='Wistia')
+ax.plot([-2, 2], [-1.5, 1.5], lin_reg.predict([[-2, -1.5], [2, 1.5]]))
+ax.scatter(regression_data[:, 0], regression_data[:, 1], lin_reg.predict(regression_data))
+plt.show()
+
+# compute PCs and project
+U, s, Vt = np.linalg.svd(regression_data)
+c1 = Vt.T[:, 0]
+X2D = regression_data.dot(c1)
+
+# visualize new data
+plt.scatter(X2D, regression_targets)
+plt.show()
+
+transform_pca = PCA(n_components=1, random_state=RANDOM_STATE).fit_transform(regression_data)
+
+plt.scatter(transform_pca, regression_targets)
 plt.show()
 
 
