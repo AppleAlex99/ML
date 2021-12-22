@@ -3,10 +3,9 @@ import numpy as np
 import pandas as pd
 import sklearn
 import tensorflow as tf
-from keras.layers import Flatten, Dense, Dropout
+from keras.layers import Dense, Dropout, Flatten, BatchNormalization
 from keras.models import Sequential
 from sklearn import *
-from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import MinMaxScaler
 
 print("###################Task 1###################")
@@ -89,7 +88,7 @@ x_test_04 = scaler.transform(x_test_04.reshape(-1, x_test_04.shape[-1])).reshape
 
 print("Part a and b")
 # Improve the model
-model_a = Sequential([
+model_4a = Sequential([
     Flatten(input_shape=(28, 28)),
     Dense(256, activation='relu'),
     Dense(128, activation='relu'),
@@ -97,6 +96,40 @@ model_a = Sequential([
     Dropout(0.25),
     Dense(10, activation='softmax')
 ])
-model_a.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model_4a.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-model_a.fit(x_train_04, y_train_04, epochs=5)
+model_4a.fit(x_train_04, y_train_04, epochs=5)
+
+# The training accuracy is 0.9858
+
+val_loss_4, val_acc_4 = model_4a.evaluate(x_test_04, y_test_04)
+print("Accuracy for test set:", val_acc_4)
+
+# The test accuracy is 0.9767
+# The dropout rate defines how many neurons are eliminated in each layer
+# With dropout in a nn overfitting can be minimized
+
+print("Part c")
+model_4c = Sequential([
+    Flatten(input_shape=(28, 28)),
+    BatchNormalization(),
+    Dense(256, activation='relu'),
+    BatchNormalization(),
+    Dense(128, activation='relu'),
+    BatchNormalization(),
+    Dense(64, activation='relu'),
+    Dropout(0.25),
+    Dense(10, activation='softmax')
+])
+model_4c.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+model_4c.fit(x_train_04, y_train_04, epochs=5)
+
+# The training accuracy is 0.9733
+
+val_loss_4c, val_acc_4c = model_4c.evaluate(x_test_04, y_test_04)
+print("Accuracy for test set:", val_acc_4c)
+# The test accuracy with BatchNormalization is 0.9732
+
+# Batch normalization applies a transformation that maintains the mean output
+# close to 0 and the output standard deviation close to 1
